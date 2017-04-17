@@ -1,43 +1,58 @@
-function CArray(numElements) {
-    this.dataStore = [];
-    this.pos = 0;
-    this.numElements = numElements;
-    this.gaps = [];//希尔排序的间隔序列
-    for(var i = 0; i < numElements; i ++) {
-        this.dataStore[i] = i;
+# javascript排序
+
+对于算法来说，排序问题应该说是最简单也是最常见的算法了。今天，我们通过javascript脚本语言来写一些经典的排序算法。排序算法大致可以分别两大类，基本排序算法和高级排序算法。常见的基本排序算法有：冒泡、选择、插入。一些高级排序：希尔、归并、快排。下面我们就来一一介绍(为了比较各个算法的效率问题，我们统一到最后进行展示)
+
+为了整合代码，我们将所有的排序方法封装在CArray构造函数中
+
+``` 
+    function CArray(numElements) {
+        this.dataStore = [];
+        this.pos = 0;
+        this.numElements = numElements;
+        this.gaps = [];//希尔排序的间隔序列
+        for(var i = 0; i < numElements; i ++) {
+            this.dataStore[i] = i;
+        }
     }
-}
-
-CArray.prototype.setData = function () {
-    for(var i = 0; i < this.numElements; i ++) {
-        this.dataStore[i] = Math.ceil(Math.random() * (this.numElements + 1));
+```
+还需要有一些辅助类的函数
+```
+    CArray.prototype.setData = function () {
+        for(var i = 0; i < this.numElements; i ++) {
+            this.dataStore[i] = Math.ceil(Math.random() * (this.numElements + 1));
+        }
     }
-}
 
-CArray.prototype.clear = function () {
-    for(var i = 0; i < this.numElements; i ++) {
-        this.dataStore[i] = 0;
+    CArray.prototype.clear = function () {
+        for(var i = 0; i < this.numElements; i ++) {
+            this.dataStore[i] = 0;
+        }
     }
-}
 
-CArray.prototype.insert = function (ele) {
-    this.dataStore[this.pos ++] = ele;
-}
-
-CArray.prototype.toString = function () {
-    var restr = '';
-    for(var i = 0; i < this.numElements; i ++) {
-        restr += this.dataStore[i] + ' ';
+    CArray.prototype.insert = function (ele) {
+        this.dataStore[this.pos ++] = ele;
     }
-    return restr;
-}
 
-CArray.prototype.swap = function (arr, index1, index2) {
-    var temp = arr[index1];
-    arr[index1] = arr[index2];
-    arr[index2] = temp;
-}
+    CArray.prototype.toString = function () {
+        var restr = '';
+        for(var i = 0; i < this.numElements; i ++) {
+            restr += this.dataStore[i] + ' ';
+        }
+        return restr;
+    }
 
+    CArray.prototype.swap = function (arr, index1, index2) {
+        var temp = arr[index1];
+        arr[index1] = arr[index2];
+        arr[index2] = temp;
+    }
+```
+*** 
+
+#### 冒泡排序
+说到冒泡排序，大家最熟悉不过了，冒泡的目的是将大的数据移动到末尾，故称为冒泡。
+
+```
 //冒泡排序
 CArray.prototype.bubbleSort = function () {
     var startTime = new Date().getTime();
@@ -53,7 +68,10 @@ CArray.prototype.bubbleSort = function () {
     var elapsed = endTime - startTime;
     console.log('The time of bubbleSort: ' + elapsed);
 }
-
+```
+#### 选择排序
+选择排序与冒泡排序相反，冒泡是将大的数据冒泡到队尾，然而选择排序是将小的数据排到前面。
+```
 //选择排序
 CArray.prototype.selectSort = function () {
     var startTime = new Date().getTime();
@@ -76,7 +94,11 @@ CArray.prototype.selectSort = function () {
     var elapsed = endTime - startTime;
     console.log('The time of selectSort: ' + elapsed);
 }
+```
 
+#### 插入排序
+插入排序是将每一个元素与它前面的所有元素进行比较，从数组第二位开始递归执行，所以元素前面的数据都是排好顺序的，只需要移位将该元素插入即可
+```
 //插入排序
 CArray.prototype.insertionSort = function () {
     var startTime = new Date().getTime();
@@ -94,8 +116,12 @@ CArray.prototype.insertionSort = function () {
     var elapsed = endTime - startTime;
     console.log('The time of insertionSort: ' + elapsed);
 }
+```
 
+#### 希尔排序
+希尔排序是插入排序的升级版本，原理与插入排序相同，只是希尔排序通过有效次数间隔不同的插入排序进行排序。
 
+```
 //希尔排序
 CArray.prototype.setGaps = function (arr) {
     this.gaps = arr;
@@ -116,8 +142,13 @@ CArray.prototype.shellSort = function () {
     var elapsed = endTime - startTime;
     console.log('The time of shellSort: ' + elapsed);
 }
+```
 
-//归并排序
+#### 归并排序
+归并排序是将一个大数组分成两个小数组，在将两个小数组进行分割，直到有数组的元素为1，对小数组惊醒排序，然后在将两个小数组合并排序形成新的有序数组，递归排序。这里的递归设计到递归深度的问题，我试了1000000次nodejs运行环境的归并排序并没有出现这种情况。
+
+```
+/归并排序
 // 自顶向下的递归方法（递归深度太深）
 CArray.prototype.mergeSort = function () {
     var startTime = new Date().getTime();
@@ -143,10 +174,11 @@ CArray.prototype.merge = function (left, right) {
         return a - b;
     });
 }
-//自底向上
+```
 
-
-
+#### 快速排序
+最经典的排序，也是最快的排序。通过选出一个暂定值将数组分成大于它的和小于它的两个数组，在将两个数组执行这样的操作，直到数组有数组的元素小于2个，将他们按照顺序合并就好。
+```
 //快速排序
 CArray.prototype.quickSort = function (arr) {
     var startTime = new Date().getTime();
@@ -171,7 +203,11 @@ CArray.prototype.quickSortHelper = function (arr) {
     }
     return this.quickSortHelper(lesser).concat(pivot, this.quickSortHelper(greater));
 }
-var numElements = 1000;
+```
+***
+#### 测试代码
+```
+var numElements = 100000;
 var myNums1 = new CArray(numElements);
 var myNums2 = new CArray(numElements);
 var myNums3 = new CArray(numElements);
@@ -200,3 +236,19 @@ myNums5.mergeSort();
 myNums6.quickSort();
 // console.log('after sort: ');
 // console.log(myNums6.toString());
+```
+![jieguo](./jieguo.png)
+这是100000数据的排序耗时
+
+![jieguo](./jieguo2.png)
+这是10000数据的排序耗时
+
+![jieguo](./jieguo3.png)
+这是1000数据的排序耗时
+
+高级算法更适合大数据的运算，在小数据运算上可能不如基本排序算法，但是快速排序无论是大数据还是小数据量，表现都是很好。
+
+
+
+
+
