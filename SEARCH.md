@@ -79,6 +79,7 @@ CArray.prototype.seqSearch2 = function (data) {
 }
 ```
 ![seqSearch2-1](./img/seqSearch2-1.png)
+
 ![seqSearch2-2](./img/seqSearch2-2.png)
 
 > 二分查找法
@@ -106,6 +107,7 @@ CArray.prototype.binSearch = function (data) {
 ```
 二分查找虽然提高了效率，但是不知道有没有发现这样一个问题
 ![binSearch-1](./img/binSearch-1.png)
+
 当binSearch函数找到某个值的时候，如果数据集中还有其他几个相同的数据出现，那么该函数会定位在类似值的附近。换句话说，其他值可能会出现在已找到的值的左边或者右边。（即找到的可能不是第一个出现的数据）
 
 如果想要直到列表中总共有多少数据与想要查找的数据相同，可以编写一个count函数
@@ -136,6 +138,7 @@ CArray.prototype.count = function (data) {
 }
 ```
 ![binSearch-2](./img/binSearch-2.png)
+
 如图所示，还是那个例子，统计出有三个7
 
 > 就酱紫~
