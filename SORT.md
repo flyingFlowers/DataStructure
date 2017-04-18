@@ -237,13 +237,13 @@ myNums6.quickSort();
 // console.log('after sort: ');
 // console.log(myNums6.toString());
 ```
-![jieguo](./jieguo.png)
+![jieguo](./img/jieguo.png)
 这是100000数据的排序耗时
 
-![jieguo](./jieguo2.png)
+![jieguo](./img/jieguo2.png)
 这是10000数据的排序耗时
 
-![jieguo](./jieguo3.png)
+![jieguo](./img/jieguo3.png)
 这是1000数据的排序耗时
 
 高级算法更适合大数据的运算，在小数据运算上可能不如基本排序算法，但是快速排序无论是大数据还是小数据量，表现都是很好。
